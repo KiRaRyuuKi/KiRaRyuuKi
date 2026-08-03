@@ -16,14 +16,14 @@ Here are some ideas to get you started:
 -->
 
 <div align=center>
-  <img src="https://github-readme-stats.vercel.app/api?username=chijiokeokorji&theme=transparent&count_private=true&show_icons=true&rank_icon=github&locale=en" alt="ChijiokeOkorji's GitHub Stats" />
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=chijiokeokorji&theme=transparent&count_private=true&border_radius=10&locale=en" alt="ChijiokeOkorji's" />
+  <img src="https://github-readme-stats.vercel.app/api?username=kiraryuuki&theme=transparent&count_private=true&show_icons=true&rank_icon=github&locale=en" alt="kiraryuuki's GitHub Stats" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=kiraryuuki&theme=transparent&count_private=true&border_radius=10&locale=en" alt="kiraryuuki's" />
 </div>
 
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/{USERNAME}/{USERNAME}/output/github-contribution-grid-snake-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/{USERNAME}/{USERNAME}/output/github-contribution-grid-snake.svg" />
-    <img alt="github-snake" src="https://raw.githubusercontent.com/{USERNAME}/{USERNAME}/output/github-contribution-grid-snake.svg" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kiraryuuki/kiraryuuki/output/github-contribution-grid-snake-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kiraryuuki/kiraryuuki/output/github-contribution-grid-snake.svg" />
+    <img alt="github-snake" src="https://raw.githubusercontent.com/kiraryuuki/kiraryuuki/output/github-contribution-grid-snake.svg" />
   </picture>
 </div>
