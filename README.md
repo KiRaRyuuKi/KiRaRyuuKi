@@ -16,7 +16,7 @@ Here are some ideas to get you started:
 -->
 
 <div align=center>
-  <img src="https://kiraryuuki-readme-stats.vercel.app/api?username=KiRaRyuuKi&theme=transparent&count_private=true&show_icons=true&rank_icon=github&locale=en" alt="KiRaRyuuKi's GitHub Stats" />
+  <img src="https://kiraryuuki-readme-stats.vercel.app/api?username=KiRaRyuuKi&theme=transparent&count_private=true&show_icons=true&rank_icon=github&border_radius=20&locale=en" alt="KiRaRyuuKi's GitHub Stats" />
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=KiRaRyuuKi&theme=transparent&count_private=true&border_radius=10&locale=en" alt="KiRaRyuuKi's" />
 </div>
 
