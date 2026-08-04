@@ -16,9 +16,9 @@ Here are some ideas to get you started:
 -->
 
 <div align=center>
-  <img width=450 src="https://kiraryuuki-readme-stats.vercel.app/api?username=KiRaRyuuKi&theme=transparent&count_private=true&show_icons=true&rank_icon=github&border_radius=20&locale=en" alt="KiRaRyuuKi's GitHub Stats" />
-  <img width=450 src="https://github-readme-streak-stats.herokuapp.com/?user=KiRaRyuuKi&theme=transparent&count_private=true&border_radius=20&locale=en" alt="KiRaRyuuKi's" />
-  <img width=450 src="https://kiraryuuki-readme-stats.vercel.app/api/top-langs?username=KiRaRyuuKi&theme=transparent&layout=donut&hide=css&langs_count=8&border_radius=20&show_icons=true&locale=en" alt="KiRaRyuuKi's Most Used Languages" />
+  <img src="https://kiraryuuki-readme-stats.vercel.app/api?username=KiRaRyuuKi&theme=transparent&count_private=true&show_icons=true&rank_icon=github&border_radius=20&locale=en" alt="KiRaRyuuKi's GitHub Stats" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=KiRaRyuuKi&theme=transparent&count_private=true&border_radius=20&locale=en" alt="KiRaRyuuKi's" />
+  <img src="https://kiraryuuki-readme-stats.vercel.app/api/top-langs?username=KiRaRyuuKi&theme=transparent&layout=donut&hide=css&langs_count=8&border_radius=20&show_icons=true&locale=en" alt="KiRaRyuuKi's Most Used Languages" />
 </div>
 
 <div align="center">
