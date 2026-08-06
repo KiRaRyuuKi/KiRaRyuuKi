@@ -15,11 +15,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-<div align=center>
-  <img src="https://kiraryuuki-readme-stats.vercel.app/api?username=KiRaRyuuKi&theme=transparent&count_private=true&show_icons=true&rank_icon=github&border_radius=20&locale=en" alt="KiRaRyuuKi's GitHub Stats" />
-  <img src="https://kiraryuuki-readme-stats.vercel.app/api/streak?username=KiRaRyuuKi&theme=transparent&border_radius=20&locale=en" alt="KiRaRyuuKi's GitHub Streak" />
-  <img src="https://kiraryuuki-readme-stats.vercel.app/api/top-langs?username=KiRaRyuuKi&theme=transparent&layout=donut&hide=css&langs_count=8&border_radius=20&show_icons=true&locale=en" alt="KiRaRyuuKi's Most Used Languages" />
-</div>
+
 
 <div align="center">
   <picture>
