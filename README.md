@@ -28,7 +28,7 @@ Here are some ideas to get you started:
 
 <div align="center">
   <picture>
-    <img alt="kiraryuuki" src="kiraryuuki.png" />
+    <img alt="KiRaRyuuKi" src="KiRaRyuuKi.png" />
   </picture>
 </div>
 
