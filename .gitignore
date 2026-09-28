@@ -1,0 +1,13 @@
+node_modules
+.vite
+
+dist
+
+# Playwright (hasil run pindah ke %LOCALAPPDATA%\Temp\opencode via config,
+# ini sabuk pengaman bila ada yang lolos)
+/test-results/
+/playwright-report/
+
+Thumbs.db
+.DS_Store
+*.log
