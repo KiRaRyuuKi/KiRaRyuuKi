@@ -1,181 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  PLAYLISTS,
+  TRACKS,
+  type Playlist,
+  type Track,
+} from "../../lib/musics";
 import { IconMusic, IconSoundOff, IconSoundOn } from "../ui/icons";
-
-type Playlist =
-  | "mellow"
-  | "hype"
-  | "chill"
-  | "focus"
-  | "night"
-  | "rain"
-  | "drive"
-  | "nostalgia";
-
-type Track = {
-  title: string;
-  artist: string;
-  src: string;
-  playlist: Playlist;
-};
-
-const PLAYLISTS: ("all" | Playlist)[] = [
-  "all",
-  "mellow",
-  "hype",
-  "chill",
-  "focus",
-  "night",
-  "rain",
-  "drive",
-  "nostalgia",
-];
-
-const TRACKS: Track[] = [
-  {
-    title: "L",
-    artist: "Halstage",
-    src: "./music/mellow/Halstage - L.mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Di Ujung Jalan",
-    artist: "SAMSONS",
-    src: "./music/mellow/SAMSONS - Di Ujung Jalan.mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Apa Kabar Sayang",
-    artist: "Armada",
-    src: "./music/mellow/Armada_-_Apa_Kabar_Sayang_(Official_Music_Video)(128k).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Hargai Aku",
-    artist: "Armada",
-    src: "./music/mellow/Armada_-_Hargai_Aku_(Official_Music_Video)(128k).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Harusnya Aku",
-    artist: "Armada",
-    src: "./music/mellow/Armada_-_Harusnya_Aku_(Unofficial_Music_Video)(128k).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Mau Dibawa Kemana",
-    artist: "Armada",
-    src: "./music/mellow/Armada_-_Mau_Dibawa_Kemana_(Official_Music_Video)(128k).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Pemilik Hati",
-    artist: "Armada",
-    src: "./music/mellow/Armada_-_Pemilik_Hati_(Official_Music_Video)(128k).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Loverboy",
-    artist: "A-Wall",
-    src: "./music/mellow/A-Wall_-_Loverboy__Who_Got_You_Smiling_Like_That_(256k).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Beautiful Things",
-    artist: "Benson Boone",
-    src: "./music/mellow/Benson Boone - Beautiful Things (Official Music Video).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Savior",
-    artist: "Beowulf",
-    src: "./music/mellow/Beowulf_-_Savior_Lyrics_spirit_lead_me_where_my_trust_is_without_borders_(128kbps).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Dandelions",
-    artist: "Ruth B",
-    src: "./music/mellow/Dandelions_-_Ruth_B_(Lyrics_Slow_Version)(128kbps).mp3",
-    playlist: "mellow",
-  },
-  {
-    title: "Kita Slamanya",
-    artist: "Bondan & Fade 2 Black",
-    src: "./music/hype/Bondan & Fade 2 Black - Kita Slamanya.mp3",
-    playlist: "hype",
-  },
-  {
-    title: "Pergi Pagi Pulang Pagi",
-    artist: "Armada",
-    src: "./music/hype/Armada_-_Pergi_Pagi_Pulang_Pagi_(Official_Vdeo)(128k).mp3",
-    playlist: "hype",
-  },
-  {
-    title: "hot girl bummer",
-    artist: "blackbear",
-    src: "./music/hype/Blackbear_-_Hot_Girl_Bummer__Lyrics_(256k).mp3",
-    playlist: "hype",
-  },
-  {
-    title: "Not With Me",
-    artist: "Bondan Prakoso ft. Fade 2 Black",
-    src: "./music/hype/Bondan Prakoso Ft Fade 2 Black - Not With Me.mp3",
-    playlist: "hype",
-  },
-  {
-    title: "Ya Sudahlah",
-    artist: "Bondan Prakoso & Fade 2 Black",
-    src: "./music/hype/Bondan_Prakoso,_Fade2Black_-_Ya_Sudahlah_(Video_Clip)(128k).mp3",
-    playlist: "hype",
-  },
-  {
-    title: "Hymn For The Weekend",
-    artist: "Coldplay",
-    src: "./music/hype/Coldplay_-_Hymn_For_The_Weekend_(Official_Video)(128kbps).mp3",
-    playlist: "hype",
-  },
-  {
-    title: "Drop on The Roof",
-    artist: "Sunshine",
-    src: "./music/chill/Sunshine - Drop on The Roof (Lofi Hip Hop).mp3",
-    playlist: "chill",
-  },
-  {
-    title: "Sex, Drugs, Etc.",
-    artist: "Beach Weather",
-    src: "./music/chill/Beach Weather - Sex, Drugs, Etc.mp3",
-    playlist: "chill",
-  },
-  {
-    title: "Fix You",
-    artist: "Coldplay",
-    src: "./music/night/Coldplay_-_Fix_You(128kbps).mp3",
-    playlist: "night",
-  },
-  {
-    title: "Yellow",
-    artist: "Coldplay",
-    src: "./music/night/Coldplay_-_Yellow(128kbps).mp3",
-    playlist: "night",
-  },
-  {
-    title: "Resah Jadi Luka",
-    artist: "Daun Jatuh",
-    src: "./music/night/Daun_Jatuh_-_Resah_Jadi_Luka_(Official_Audio)(128k).mp3",
-    playlist: "night",
-  },
-  {
-    title: "Long Drives",
-    artist: "BoyWithUke",
-    src: "./music/drive/BoyWithUke_-_Long_Drives_(Official_Music_Video).mp3",
-    playlist: "drive",
-  },
-  {
-    title: "It Will Rain",
-    artist: "Francis Greg",
-    src: "./music/rain/Bruno_Mars_-_It_Will_Rain_(Cover_Francis_Greg)(128kbps).mp3",
-    playlist: "rain",
-  },
-];
 
 function formatTime(sec: number) {
   if (!Number.isFinite(sec) || sec < 0) return "0:00";
@@ -768,7 +598,7 @@ export function MusicPlayer() {
                   <div
                     role="menu"
                     aria-label="Daftar lagu"
-                    className="slide-fade absolute bottom-full right-0 z-10 mb-2 w-[340px] overflow-hidden rounded-[12px] border border-hairline bg-card shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
+                    className="slide-fade absolute bottom-full right-0 z-10 mb-2 max-h-[21.5dvh] min-h-0 w-[340px] overflow-hidden rounded-[12px] border border-hairline bg-card shadow-[0_12px_40px_rgba(0,0,0,0.22)] overflow-y-auto [scrollbar-width:none]"
                   >
                     {queue.map((t, i) => (
                       <button
