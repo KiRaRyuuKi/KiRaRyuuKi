@@ -24,8 +24,8 @@ export function GithubCard({ className }: { className?: string }) {
   const followers = useCountUp(live?.followers ?? 0);
   const following = useCountUp(live?.following ?? 0);
 
-  const dayLabels = ["", "Mon", "", "Wed", "", "Fri", ""];
-  const dayNames = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+  const dayLabels = ["", "Tue", "", "Thu", "", "Sat", ""];
+  const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   return (
     <Card
@@ -124,7 +124,7 @@ export function GithubCard({ className }: { className?: string }) {
                 Less
               </span>
               {HEAT_COLORS.map((c, i) => (
-                <i key={i} className={`size-[9px] rounded-[2.5px] ${c}`} />
+                <i key={i} className={`size-[8px] rounded-[2.5px] ${c}`} />
               ))}
               <span className="font-mono text-[9px] text-ink-45">More</span>
             </div>

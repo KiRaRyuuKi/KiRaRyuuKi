@@ -196,7 +196,7 @@ export function Panel() {
 
   return (
     <>
-      <div className="grid grid-cols-1 h-full items-center gap-x-gutter gap-y-[clamp(26px,3vw,44px)] lg:grid-cols-2">
+      <div className="relative grid grid-cols-1 h-full items-center gap-x-gutter gap-y-[clamp(26px,3vw,44px)] lg:grid-cols-2">
         <figure className="relative w-full max-w-[min(100%,425px)] mx-auto aspect-4/5 overflow-hidden place-items-center before:absolute before:top-3 before:left-3 before:z-1 before:size-4 before:border before:border-hairline before:border-r-0 before:border-b-0 before:content-[''] after:absolute after:right-3 after:bottom-3 after:z-1 after:size-4 after:border after:border-hairline after:border-t-0 after:border-l-0 after:content-['']">
           <div className="relative size-full p-[22px]">
             <div className="relative size-full overflow-hidden">
@@ -290,7 +290,7 @@ export function Panel() {
 
           <div
             ref={colRef}
-            className="absolute right-9 mt-28 flex flex-col items-center gap-[5px]"
+            className="absolute right-[calc(2.25rem_-_var(--pad-x))] mt-28 flex flex-col items-center gap-[5px]"
           >
             {hobbies.map((hobby) => (
               <div key={hobby.title} className="relative">

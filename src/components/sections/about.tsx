@@ -82,7 +82,7 @@ export function Panel() {
         </div>
       </div>
 
-      <figure className="relative w-full max-w-[min(100%,400px)] mx-auto aspect-4/5 overflow-hidden place-items-center rounded-[22px] bg-card shadow-[0_1px_2px_rgba(10,10,10,0.05)] before:absolute before:top-3 before:left-3 before:z-1 before:size-4 before:border before:border-hairline before:border-r-0 before:border-b-0 before:content-[''] after:absolute after:right-3 after:bottom-3 after:z-1 after:size-4 after:border after:border-hairline after:border-t-0 after:border-l-0 after:content-['']">
+      <figure className="relative w-full max-w-[min(100%,350px)] mx-auto aspect-4/5 overflow-hidden place-items-center rounded-[22px] bg-card shadow-[0_1px_2px_rgba(10,10,10,0.05)] before:absolute before:top-3 before:left-3 before:z-1 before:size-4 before:border before:border-hairline before:border-r-0 before:border-b-0 before:content-[''] after:absolute after:right-3 after:bottom-3 after:z-1 after:size-4 after:border after:border-hairline after:border-t-0 after:border-l-0 after:content-['']">
         <div className="relative size-full p-[22px]">
           <img
             src="./images/foto-cv.png"

@@ -55,6 +55,7 @@
   --gutter: 7px;
   --pad-x: 34px;
   --pad-y: 30px;
+  --content-max: 1500px;
 
   --dur-fast: 0.18s;
   --dur: 0.34s;

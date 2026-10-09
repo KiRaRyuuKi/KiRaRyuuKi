@@ -499,11 +499,24 @@ export async function fetchUmamiStats(
   const pv = series.pageviews ?? [];
   const ss = series.sessions ?? [];
   const tail = pv.slice(-UMAMI_SERIES_DAYS);
+  const dense = tail.length > 14;
   const days = tail.map((p, i) => {
     const iso = typeof p.x === "string" ? p.x.slice(0, 10) : "";
     const d = new Date(p.x);
-    const label = Number.isNaN(d.getTime()) ? `#${i + 1}` : String(d.getDate());
     const sess = ss[ss.length - tail.length + i]?.y ?? 0;
+    if (Number.isNaN(d.getTime())) {
+      return { label: `#${i + 1}`, iso, sessions: sess, pageViews: p.y };
+    }
+    const prevItem = tail[i - 1];
+    const prev = prevItem ? new Date(prevItem.x) : null;
+    const startsMonth =
+      prev === null ||
+      Number.isNaN(prev.getTime()) ||
+      prev.getMonth() !== d.getMonth() ||
+      prev.getFullYear() !== d.getFullYear();
+    const showMonth = dense ? startsMonth : true;
+    const month = d.toLocaleDateString("id-ID", { month: "short" });
+    const label = showMonth ? `${month} ${d.getDate()}` : String(d.getDate());
     return { label, iso, sessions: sess, pageViews: p.y };
   });
   return {

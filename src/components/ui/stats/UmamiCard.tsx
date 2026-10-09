@@ -59,7 +59,7 @@ export function UmamiCard({ className }: { className?: string }) {
   return (
     <Card
       title="Umami"
-      sub="Live · all-time."
+      sub="Traffic and interaction."
       right={
         <a
           href={UMAMI_SHARE_URL}
@@ -73,7 +73,7 @@ export function UmamiCard({ className }: { className?: string }) {
       className={className}
     >
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="grid grid-cols-3 gap-1.5">
+        <div className="grid grid-cols-5 gap-1.5">
           <MiniStat
             label="Views"
             value={
@@ -91,7 +91,9 @@ export function UmamiCard({ className }: { className?: string }) {
           <MiniStat
             label="Visits"
             value={
-              <span ref={visits.ref}>{visits.value.toLocaleString("en-US")}</span>
+              <span ref={visits.ref}>
+                {visits.value.toLocaleString("en-US")}
+              </span>
             }
           />
           <MiniStat label="Countries" value={live.countries} />
@@ -129,7 +131,7 @@ export function UmamiCard({ className }: { className?: string }) {
                       style={{ height: `${sessH}%` }}
                     />
                   </div>
-                  <span className="font-mono text-[9px] text-ink-45">
+                  <span className="font-mono text-[9px] whitespace-nowrap text-ink-45">
                     {m.label}
                   </span>
                 </div>

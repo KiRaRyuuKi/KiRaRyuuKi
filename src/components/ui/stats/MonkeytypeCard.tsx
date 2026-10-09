@@ -95,7 +95,7 @@ export function MonkeytypeCard({ className }: { className?: string }) {
   return (
     <Card
       title="Monkeytype Stats"
-      sub="Live typing statistics."
+      sub="Typing statistics and performance."
       right={m.name}
       className={className}
     >

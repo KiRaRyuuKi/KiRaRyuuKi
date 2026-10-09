@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
 import { sectionVariants } from "../../lib/motion";
 import { Navigation } from "../layout/Navigation";
@@ -26,8 +27,38 @@ export function Board({
   scan: boolean;
   onToggleScan: () => void;
 }) {
+  const [announced, setAnnounced] = useState("");
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    setAnnounced(`Bagian ${section.meta.tab} ditampilkan`);
+  }, [section.meta.tab]);
+
   return (
-    <main className="relative min-h-0 flex-1">
+    <main
+      id="content"
+      tabIndex={-1}
+      className="relative min-h-0 flex-1 outline-none"
+    >
+      <a
+        href="#content"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("content")?.focus();
+        }}
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[var(--z-modal)] focus:rounded-md focus:bg-accent focus:px-3 focus:py-1.5 focus:font-mono focus:text-[11px] focus:font-medium focus:text-accent-ink"
+      >
+        Lewati ke konten
+      </a>
+
+      <div className="sr-only" aria-live="polite">
+        {announced}
+      </div>
+
       <div
         className="bg-panel rounded-frame border border-hairline absolute inset-0"
         aria-hidden="true"
@@ -57,7 +88,9 @@ export function Board({
             animate="animate"
             exit="exit"
           >
-            <section.Panel />
+            <div className="mx-auto h-full w-full max-w-[var(--content-max)]">
+              <section.Panel />
+            </div>
           </m.section>
         </AnimatePresence>
       </div>

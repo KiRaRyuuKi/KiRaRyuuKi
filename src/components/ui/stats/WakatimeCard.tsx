@@ -36,8 +36,7 @@ export function WakatimeCard({ className }: { className?: string }) {
             target="_blank"
             rel="noreferrer"
             className="transition-colors hover:text-accent-strong"
-          >
-          </a>
+          ></a>
         }
         className={className}
       >
@@ -80,7 +79,7 @@ export function WakatimeCard({ className }: { className?: string }) {
   return (
     <Card
       title="WakaTime Stats"
-      sub="Live · last 7 days."
+      sub="Coding activity this week."
       right={
         <a
           href={WAKATIME_SHARE_URL.replace(/\.json$/, "")}
@@ -100,9 +99,7 @@ export function WakatimeCard({ className }: { className?: string }) {
           <MiniStat label="Daily Avg" value={live.avgDaily} />
           <MiniStat label="Total Week" value={live.totalWeek} />
           <MiniStat label="Best Day" value={live.bestDay} />
-          {live.allTime ? (
-            <MiniStat label="All-Time" value={live.allTime} />
-          ) : null}
+          <MiniStat label="All-Time" value={live.allTime} />
         </div>
         <div className="min-w-0 flex-1 rounded-[10px] bg-panel-deep p-2.5">
           <p className="font-mono text-[9px] tracking-[0.08em] text-ink-45">
