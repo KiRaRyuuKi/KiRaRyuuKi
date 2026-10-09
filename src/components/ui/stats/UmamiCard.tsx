@@ -54,7 +54,7 @@ export function UmamiCard({ className }: { className?: string }) {
     );
   }
 
-  const max = Math.max(1, ...live.months.map((m) => m.pageViews));
+  const max = Math.max(1, ...live.days.map((m) => m.pageViews));
 
   return (
     <Card
@@ -97,7 +97,7 @@ export function UmamiCard({ className }: { className?: string }) {
           <MiniStat label="Countries" value={live.countries} />
           <MiniStat label="Events" value={live.events} />
         </div>
-        {live.months.length === 0 ? (
+        {live.days.length === 0 ? (
           <p className="mt-1.5 font-mono text-[10px] text-ink-45">
             Belum ada traffic tercatat.
           </p>
@@ -105,9 +105,9 @@ export function UmamiCard({ className }: { className?: string }) {
           <div
             className="mt-1.5 flex min-h-[96px] flex-1 items-end gap-1.5"
             role="img"
-            aria-label="Grafik traffic per bulan (live dari Umami)"
+            aria-label="Grafik traffic harian 30 hari terakhir (live dari Umami)"
           >
-            {live.months.map((m) => {
+            {live.days.map((m) => {
               const h = Math.max(6, Math.round((m.pageViews / max) * 100));
               const sessH =
                 m.pageViews > 0
@@ -115,9 +115,9 @@ export function UmamiCard({ className }: { className?: string }) {
                   : 0;
               return (
                 <div
-                  key={m.label}
+                  key={m.iso || m.label}
                   className="flex h-full flex-1 flex-col items-center justify-end gap-0.5"
-                  title={`${m.label}: ${m.pageViews} views / ${m.sessions} sessions`}
+                  title={`${m.iso || m.label}: ${m.pageViews} views / ${m.sessions} sessions`}
                 >
                   <div
                     className="flex w-full flex-col justify-end overflow-hidden rounded-[4px]"

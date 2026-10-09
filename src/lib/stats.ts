@@ -93,6 +93,12 @@ export type MonkeytypeStats = {
   pbTime: MonkeytypePb[];
   pbWords: MonkeytypePb[];
 };
+export type UmamiPoint = {
+  label: string;
+  iso: string;
+  sessions: number;
+  pageViews: number;
+};
 export type UmamiStats = {
   site: string;
   pageViews: number;
@@ -100,7 +106,7 @@ export type UmamiStats = {
   visits: number;
   countries: number;
   events: number;
-  months: { label: string; sessions: number; pageViews: number }[];
+  days: UmamiPoint[];
 };
 
 async function fetchJson<T>(url: string, signal?: AbortSignal): Promise<T> {
@@ -449,20 +455,7 @@ type UmamiSeries = {
   sessions: { x: string; y: number }[];
 };
 
-const MONTH_SHORT = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+const UMAMI_SERIES_DAYS = 30;
 
 export async function fetchUmamiStats(
   signal?: AbortSignal,
@@ -494,7 +487,7 @@ export async function fetchUmamiStats(
       `/websites/${share.websiteId}/stats?startAt=0&endAt=${now}`,
     ),
     doGet<UmamiSeries>(
-      `/websites/${share.websiteId}/pageviews?startAt=0&endAt=${now}&unit=month`,
+      `/websites/${share.websiteId}/pageviews?startAt=${now - UMAMI_SERIES_DAYS * 86_400_000}&endAt=${now}&unit=day`,
     ),
     doGet<{ x: string; y: number }[]>(
       `/websites/${share.websiteId}/metrics?startAt=0&endAt=${now}&type=country`,
@@ -505,14 +498,13 @@ export async function fetchUmamiStats(
   ]);
   const pv = series.pageviews ?? [];
   const ss = series.sessions ?? [];
-  const tail = pv.slice(-6);
-  const months = tail.map((p, i) => {
+  const tail = pv.slice(-UMAMI_SERIES_DAYS);
+  const days = tail.map((p, i) => {
+    const iso = typeof p.x === "string" ? p.x.slice(0, 10) : "";
     const d = new Date(p.x);
-    const label = Number.isNaN(d.getTime())
-      ? `M${i + 1}`
-      : (MONTH_SHORT[d.getMonth()] ?? "");
+    const label = Number.isNaN(d.getTime()) ? `#${i + 1}` : String(d.getDate());
     const sess = ss[ss.length - tail.length + i]?.y ?? 0;
-    return { label, sessions: sess, pageViews: p.y };
+    return { label, iso, sessions: sess, pageViews: p.y };
   });
   return {
     site: UMAMI_SITE,
@@ -523,6 +515,6 @@ export async function fetchUmamiStats(
     events: Array.isArray(events)
       ? events.reduce((a, e) => a + (e.y ?? 0), 0)
       : 0,
-    months,
+    days,
   };
 }
