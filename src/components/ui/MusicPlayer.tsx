@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, m } from "motion/react";
 import {
   PLAYLISTS,
   TRACKS,
   type Playlist,
   type Track,
 } from "../../lib/musics";
+import { popoverVariants } from "../../lib/motion";
 import { IconMusic, IconSoundOff, IconSoundOn } from "../ui/icons";
 
 function formatTime(sec: number) {
@@ -365,11 +367,17 @@ export function MusicPlayer() {
         </span>
       </button>
 
-      {open && (
-        <div
+      <AnimatePresence>
+        {open && (
+        <m.div
+          key="music-pop"
           ref={(el) => {
             popRef.current = el;
           }}
+          variants={popoverVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           className="absolute bottom-full left-0 z-10 mb-3"
         >
           <div
@@ -377,7 +385,7 @@ export function MusicPlayer() {
             role="dialog"
             aria-label={`Now playing: ${track.artist} — ${track.title}`}
             onClick={onPopupClick}
-            className="slide-fade relative w-[370px] max-w-[80vw] rounded-[18px] border border-hairline bg-card p-4 text-left shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
+            className="relative w-[370px] max-w-[80vw] rounded-[18px] border border-hairline bg-card p-4 text-left shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
           >
             {/* panah ke bawah — mengarah ke kaset (kebalikan hobby popover) */}
             <span
@@ -407,11 +415,17 @@ export function MusicPlayer() {
                 >
                   / {playlist}
                 </button>
+                <AnimatePresence>
                 {playlistOpen && (
-                  <div
+                  <m.div
+                    key="playlist-menu"
                     role="menu"
                     aria-label="Pilih playlist"
-                    className="slide-fade absolute bottom-full left-0 z-10 mb-2 w-[190px] overflow-hidden rounded-[12px] border border-hairline bg-card shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
+                    variants={popoverVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    className="absolute bottom-full left-0 z-10 mb-2 w-[190px] overflow-hidden rounded-[12px] border border-hairline bg-card shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
                   >
                     {PLAYLISTS.map((p) => {
                       const count =
@@ -445,8 +459,9 @@ export function MusicPlayer() {
                         </button>
                       );
                     })}
-                  </div>
+                  </m.div>
                 )}
+                </AnimatePresence>
               </div>
 
               {/* transport: repeat | shuffle | previous | next | titik 3 (playlist) */}
@@ -536,8 +551,17 @@ export function MusicPlayer() {
                       <IconSoundOn className="size-[14px]" />
                     )}
                   </button>
+                  <AnimatePresence>
                   {volumeOpen && (
-                    <div className="slide-fade absolute bottom-full left-1/2 z-10 mb-2 flex -translate-x-1/2 flex-col items-center gap-2 rounded-[12px] border border-hairline bg-card p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.22)]">
+                    <m.div
+                      key="volume-pop"
+                      variants={popoverVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      style={{ x: "-50%" }}
+                      className="absolute bottom-full left-1/2 z-10 mb-2 flex flex-col items-center gap-2 rounded-[12px] border border-hairline bg-card p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
+                    >
                       <input
                         type="range"
                         min={0}
@@ -573,8 +597,9 @@ export function MusicPlayer() {
                           <IconSoundOn className="size-[13px]" />
                         )}
                       </button>
-                    </div>
+                    </m.div>
                   )}
+                  </AnimatePresence>
                 </div>
                 <button
                   type="button"
@@ -594,11 +619,17 @@ export function MusicPlayer() {
                 >
                   <IconDots className="size-[14px]" />
                 </button>
+                <AnimatePresence>
                 {menuOpen && (
-                  <div
+                  <m.div
+                    key="queue-menu"
                     role="menu"
                     aria-label="Daftar lagu"
-                    className="slide-fade absolute bottom-full right-0 z-10 mb-2 max-h-[21.5dvh] min-h-0 w-[340px] overflow-hidden rounded-[12px] border border-hairline bg-card shadow-[0_12px_40px_rgba(0,0,0,0.22)] overflow-y-auto [scrollbar-width:none]"
+                    variants={popoverVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    className="absolute bottom-full right-0 z-10 mb-2 max-h-[21.5dvh] min-h-0 w-[340px] overflow-hidden rounded-[12px] border border-hairline bg-card shadow-[0_12px_40px_rgba(0,0,0,0.22)] overflow-y-auto [scrollbar-width:none]"
                   >
                     {queue.map((t, i) => (
                       <button
@@ -627,8 +658,9 @@ export function MusicPlayer() {
                         )}
                       </button>
                     ))}
-                  </div>
+                  </m.div>
                 )}
+                </AnimatePresence>
               </div>
             </div>
             <div className="mt-3 flex items-center gap-2.5">
@@ -726,8 +758,9 @@ export function MusicPlayer() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </m.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

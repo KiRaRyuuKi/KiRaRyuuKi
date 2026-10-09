@@ -3,14 +3,14 @@ export const GITHUB_USER = "KiRaRyuuKi";
 export const GITHUB_GRAPH_URL =
   "https://ghchart.rshah.org/KiRaRyuuKi";
 
-// OPSIONAL — heatmap orange (tema sendiri) dari DATA REAL. Butuh worker
-// kecil yang fetch https://ghchart.rshah.org/KiRaRyuuKi dari server,
-// parse rect `data-score`/`data-date`, dan mengembalikan JSON:
-// [{ "date": "2026-10-03", "count": 3 }, ...]
-// KOSONGKAN = kartu pakai gambar ghchart langsung (live, tapi hijau).
-// ghchart tidak mengirim header CORS, jadi browser tidak bisa fetch
-// langsung — wajib lewat worker/server.
-export const GITHUB_CONTRIBS_URL = "";
+// Heatmap orange (tema sendiri) dari DATA REAL. Sumber JSON ber-CORS
+// (Access-Control-Allow-Origin: *), bisa di-fetch langsung dari browser:
+//   https://github-contributions-api.jogruber.de/v4/{user}?y=last
+// -> { total, contributions: [{ date, count, level }] }
+// Isi dengan endpoint milikmu sendiri (worker/proxy) kalau mau tanpa pihak
+// ke-3. KOSONGKAN = kartu jatuh ke gambar ghchart langsung (live, tapi hijau).
+export const GITHUB_CONTRIBS_URL =
+  "https://github-contributions-api.jogruber.de/v4/KiRaRyuuKi?y=last";
 
 export const WAKATIME_SHARE_URL =
   "https://wakatime.com/share/@31bbc57a-0658-47f3-a3b5-8fb13ca037a7/fe0ee069-f6fa-4411-aa1f-0cfb0a7c5eb2.json";
@@ -103,8 +103,8 @@ export type UmamiStats = {
   months: { label: string; sessions: number; pageViews: number }[];
 };
 
-async function fetchJson<T>(url: string, signal: AbortSignal): Promise<T> {
-  const res = await fetch(url, { signal });
+async function fetchJson<T>(url: string, signal?: AbortSignal): Promise<T> {
+  const res = await fetch(url, { signal: signal ?? null });
   if (!res.ok) throw new Error(`API: ${res.status}`);
   return (await res.json()) as T;
 }
@@ -150,7 +150,7 @@ type WakaLangsPayload =
   | WakaLangEntry[];
 
 async function fetchWakaLanguages(
-  signal: AbortSignal,
+  signal?: AbortSignal,
 ): Promise<{ name: string; pct: number }[] | null> {
   if (!WAKATIME_LANGUAGES_SHARE_URL) return null;
   try {
@@ -197,12 +197,14 @@ export type ContribDay = { date: string; count: number };
 // Ambil hitungan kontribusi harian dari worker (lihat GITHUB_CONTRIBS_URL).
 // Gagal = throw, kartu fallback ke gambar ghchart.
 export async function fetchGitHubContribs(
-  signal: AbortSignal,
+  signal?: AbortSignal,
 ): Promise<ContribDay[]> {
   if (!GITHUB_CONTRIBS_URL) throw new Error("GITHUB_CONTRIBS_URL belum diisi");
-  const days = await fetchJson<ContribDay[]>(GITHUB_CONTRIBS_URL, signal);
-  if (!Array.isArray(days) || days.length === 0)
-    throw new Error("Kontribusi kosong");
+  const payload = await fetchJson<
+    ContribDay[] | { contributions?: ContribDay[] }
+  >(GITHUB_CONTRIBS_URL, signal);
+  const days = Array.isArray(payload) ? payload : (payload.contributions ?? []);
+  if (days.length === 0) throw new Error("Kontribusi kosong");
   return days;
 }
 
@@ -249,7 +251,7 @@ export function buildContribGrid(days: ContribDay[]): {
 
 // GitHub REST publik — live, tanpa key.
 export async function fetchGitHubSummary(
-  signal: AbortSignal,
+  signal?: AbortSignal,
 ): Promise<{ publicRepos: number; followers: number; following: number }> {
   const data = await fetchJson<{
     public_repos?: number;
@@ -267,7 +269,7 @@ export async function fetchGitHubSummary(
 // lokal: gagal fetch = throw, kartu tampilkan error. Bentuk respons:
 // { data: [{ range: { date, text }, grand_total: { total_seconds, text } }] }
 export async function fetchWakatimeStats(
-  signal: AbortSignal,
+  signal?: AbortSignal,
 ): Promise<WakatimeStats> {
   // Jalur 1 (opsional): proxy ber-API-key → full live termasuk allTime.
   if (WAKATIME_PROXY_URL) {
@@ -409,7 +411,7 @@ function mtFromProfile(p: MtProfile): MonkeytypeStats {
 // Monkeytype — publik dulu (tanpa key), proxy hanya override opsional.
 // Tanpa keduanya = throw, kartu tampilkan pesan setup. Tanpa data lokal.
 export async function fetchMonkeytypeStats(
-  signal: AbortSignal,
+  signal?: AbortSignal,
 ): Promise<MonkeytypeStats> {
   if (MONKEYTYPE_PROXY_URL) {
     return fetchJson<MonkeytypeStats>(MONKEYTYPE_PROXY_URL, signal);
@@ -463,7 +465,7 @@ const MONTH_SHORT = [
 ];
 
 export async function fetchUmamiStats(
-  signal: AbortSignal,
+  signal?: AbortSignal,
 ): Promise<UmamiStats> {
   if (!UMAMI_SHARE_URL) throw new Error("UMAMI_SHARE_URL kosong");
   const slug = umamiSlug();
@@ -481,7 +483,7 @@ export async function fetchUmamiStats(
   const now = Date.now();
   const doGet = async <T>(path: string): Promise<T> => {
     const res = await fetch(`${UMAMI_API_BASE}${path}`, {
-      signal,
+      signal: signal ?? null,
       headers,
     });
     if (!res.ok) throw new Error(`Umami: ${res.status}`);

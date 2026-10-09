@@ -571,14 +571,6 @@
   place-items: center;
   background: #000000;
   color: #ffffff;
-  transition:
-    opacity 0.55s var(--ease),
-    visibility 0.55s var(--ease);
-}
-
-.boot[data-done='true'] {
-  opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
@@ -719,6 +711,41 @@
 
 .animate-vinyl {
   animation: vinyl-spin 2.8s linear infinite;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink-18);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.35),
+    transparent
+  );
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+[data-mode="dark"] .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.06),
+    transparent
+  );
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

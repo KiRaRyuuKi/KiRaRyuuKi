@@ -1,3 +1,5 @@
+import { m } from "motion/react";
+import { staggerContainer, staggerItem } from "../../lib/motion";
 import { JellyWord } from "../ui/JellyWord";
 import { GithubCard } from "../ui/stats/GithubCard";
 import { MonkeytypeCard } from "../ui/stats/MonkeytypeCard";
@@ -54,16 +56,46 @@ export function Panel() {
             sesuatu yang berarti.
           </p>
         </div>
-        <div className="grid min-w-0 gap-2 col-span-3 grid-cols-1 lg:grid-cols-13">
-          <MonkeytypeCard className="lg:col-span-7" />
-          <WakatimeCard className="lg:col-span-6" />
-        </div>
+        <m.div
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="grid min-w-0 gap-2 col-span-3 grid-cols-1 lg:grid-cols-13"
+        >
+          <m.div
+            variants={staggerItem}
+            className="flex min-w-0 lg:col-span-7"
+          >
+            <MonkeytypeCard className="w-full" />
+          </m.div>
+          <m.div
+            variants={staggerItem}
+            className="flex min-w-0 lg:col-span-6"
+          >
+            <WakatimeCard className="w-full" />
+          </m.div>
+        </m.div>
       </div>
 
-      <div className="grid grid-cols-1 justify-between gap-3 lg:grid-cols-5">
-        <GithubCard className="lg:col-span-3" />
-        <UmamiCard className="lg:col-span-2" />
-      </div>
+      <m.div
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+        className="grid grid-cols-1 justify-between gap-3 lg:grid-cols-5"
+      >
+        <m.div
+          variants={staggerItem}
+          className="flex min-w-0 lg:col-span-3"
+        >
+          <GithubCard className="w-full" />
+        </m.div>
+        <m.div
+          variants={staggerItem}
+          className="flex min-w-0 lg:col-span-2"
+        >
+          <UmamiCard className="w-full" />
+        </m.div>
+      </m.div>
     </div>
   );
 }

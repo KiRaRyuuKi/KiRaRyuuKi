@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, m } from "motion/react";
+import { EASE_OUT } from "../../lib/motion";
 import { JellyWord } from "../ui/JellyWord";
 import {
   IconBrush,
@@ -103,11 +105,15 @@ function HobbyPopover({
       ref={wrapRef}
       className="absolute top-full right-0 z-10 mt-3 lg:top-1/2 lg:right-full lg:mt-0 lg:mr-3 lg:-translate-y-1/2"
     >
-      <div
+      <m.div
         id="hobby-pop"
         role="dialog"
         aria-label={hobby.title}
-        className="slide-fade relative w-[240px] max-w-[52vw] rounded-[16px] border border-hairline bg-card p-4 text-left shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
+        className="relative w-[240px] max-w-[52vw] rounded-[16px] border border-hairline bg-card p-4 text-left shadow-[0_12px_40px_rgba(0,0,0,0.22)]"
+        initial={{ opacity: 0, y: -6, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -6, scale: 0.96 }}
+        transition={{ duration: 0.2, ease: EASE_OUT }}
       >
         <span
           aria-hidden="true"
@@ -143,7 +149,7 @@ function HobbyPopover({
         >
           Tutup —
         </button>
-      </div>
+      </m.div>
     </div>
   );
 }
@@ -284,7 +290,7 @@ export function Panel() {
 
           <div
             ref={colRef}
-            className="absolute right-0 mt-20 flex flex-col items-center gap-[5px]"
+            className="absolute right-9 mt-28 flex flex-col items-center gap-[5px]"
           >
             {hobbies.map((hobby) => (
               <div key={hobby.title} className="relative">
@@ -295,16 +301,18 @@ export function Panel() {
                   onSelect={() => open(hobby)}
                 />
 
-                {active === hobby && (
-                  <HobbyPopover
-                    hobby={hobby}
-                    index={hobbies.indexOf(hobby)}
-                    wrapRef={(el) => {
-                      popRef.current = el;
-                    }}
-                    onClose={close}
-                  />
-                )}
+                <AnimatePresence>
+                  {active === hobby && (
+                    <HobbyPopover
+                      hobby={hobby}
+                      index={hobbies.indexOf(hobby)}
+                      wrapRef={(el) => {
+                        popRef.current = el;
+                      }}
+                      onClose={close}
+                    />
+                  )}
+                </AnimatePresence>
               </div>
             ))}
           </div>

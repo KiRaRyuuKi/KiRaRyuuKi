@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import {
-  MONKEYTYPE_PROFILE_URL,
-  fetchMonkeytypeStats,
-  type MonkeytypeStats,
-} from "../../../lib/stats";
+import { useMonkeytypeStats } from "../../../hooks/useStats";
+import { MONKEYTYPE_PROFILE_URL } from "../../../lib/stats";
 import { Card, MiniStat } from "./cards";
+import { MiniStatSkeleton, Skeleton } from "./Skeleton";
 
 function PbCol({
   label,
@@ -28,17 +25,17 @@ function PbCol({
   );
 }
 
-function SetupNote({
-  failed,
+function LoadingNote({
+  error,
   className,
 }: {
-  failed: boolean;
-  className: string | undefined;
+  error: boolean;
+  className?: string | undefined;
 }) {
   return (
     <Card
       title="Monkeytype Stats"
-      sub={failed ? "Gagal memuat data." : "Memuat data..."}
+      sub={error ? "Gagal memuat data." : "Memuat data..."}
       right={
         <a
           href={MONKEYTYPE_PROFILE_URL}
@@ -50,28 +47,49 @@ function SetupNote({
       }
       className={className}
     >
-      <p className="font-mono text-[10px] leading-relaxed text-ink-45">
-        {failed
-          ? "Monkeytype API tidak bisa dijangkau. Coba lagi nanti."
-          : "Mengambil statistik typing..."}
-      </p>
+      {error ? (
+        <p className="font-mono text-[10px] leading-relaxed text-ink-45">
+          Monkeytype API tidak bisa dijangkau. Coba lagi nanti.
+        </p>
+      ) : (
+        <div className="flex min-h-0 flex-col">
+          <div className="grid grid-cols-2 gap-1.5 xl:grid-cols-6">
+            <div className="min-w-0 rounded-[10px] bg-panel-deep px-2.5 py-2 col-span-3">
+              <div className="flex items-center gap-2">
+                <Skeleton className="size-[30px] flex-none rounded-full" />
+                <div className="min-w-0 flex-1">
+                  <Skeleton className="h-[10px] w-1/2" />
+                  <Skeleton className="mt-1 h-[9px] w-3/4" />
+                </div>
+              </div>
+              <Skeleton className="mt-1.5 h-[4px] w-full rounded-full" />
+            </div>
+            <MiniStatSkeleton />
+            <MiniStatSkeleton />
+            <MiniStatSkeleton />
+          </div>
+          <div className="mt-1.5 grid flex-1 grid-cols-2 content-center gap-1.5">
+            <div className="grid min-w-0 grid-cols-4 gap-1.5 rounded-[10px] bg-panel-deep p-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} className="h-[40px] w-full" />
+              ))}
+            </div>
+            <div className="grid min-w-0 grid-cols-4 gap-1.5 rounded-[10px] bg-panel-deep p-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} className="h-[40px] w-full" />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </Card>
   );
 }
 
 export function MonkeytypeCard({ className }: { className?: string }) {
-  const [live, setLive] = useState<MonkeytypeStats | null>(null);
-  const [failed, setFailed] = useState(false);
+  const { data: live, error } = useMonkeytypeStats();
 
-  useEffect(() => {
-    const ctrl = new AbortController();
-    fetchMonkeytypeStats(ctrl.signal)
-      .then((d) => setLive(d))
-      .catch(() => setFailed(true));
-    return () => ctrl.abort();
-  }, []);
-
-  if (!live) return <SetupNote failed={failed} className={className} />;
+  if (!live) return <LoadingNote error={Boolean(error)} className={className} />;
 
   const m = live;
   return (

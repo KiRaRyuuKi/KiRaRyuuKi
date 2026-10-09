@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { LazyMotion, MotionConfig, domAnimation } from "motion/react";
+import { SWRConfig } from "swr";
 import { sectionAt, sectionIds, sections } from "../components/sections";
 import { Board } from "../components/chrome/Board";
 import { Boot } from "../components/chrome/Boot";
@@ -9,6 +11,12 @@ import { useKeyboard } from "../hooks/useKeyboard";
 import { useCursor } from "../hooks/usePointer";
 import { useSound } from "../hooks/useSound";
 import { useThemeMode } from "../hooks/useThemeMode";
+
+const SWR_OPTIONS = {
+  dedupingInterval: 30000,
+  errorRetryCount: 2,
+  revalidateOnFocus: false,
+};
 
 export default function Layout() {
   const [index, setIndex] = useHashSection(sectionIds);
@@ -38,43 +46,47 @@ export default function Layout() {
   useKeyboard({ index, count: sections.length, onSelect: go });
 
   return (
-    <>
-      <Boot />
-      {scan && <div className="scanlines" aria-hidden="true" />}
+    <LazyMotion features={domAnimation} strict>
+      <MotionConfig reducedMotion="user">
+        <SWRConfig value={SWR_OPTIONS}>
+        <Boot />
+        {scan && <div className="scanlines" aria-hidden="true" />}
 
-      <Hud />
+        <Hud />
 
-      <div className="bg-page flex h-[100dvh] w-full flex-col p-frame-inset">
-        <div className="flex min-h-0 flex-1 flex-col">
-          <Board
-            section={section}
-            index={index}
-            onSelect={go}
-            status={`status`}
-            mode={mode}
-            onToggleMode={toggleMode}
-            sound={enabled}
-            onToggleSound={() => setEnabled(!enabled)}
-            scan={scan}
-            onToggleScan={() => setScan(!scan)}
-          />
+        <div className="bg-page flex h-[100dvh] w-full flex-col p-frame-inset">
+          <div className="flex min-h-0 flex-1 flex-col">
+            <Board
+              section={section}
+              index={index}
+              onSelect={go}
+              status={`status`}
+              mode={mode}
+              onToggleMode={toggleMode}
+              sound={enabled}
+              onToggleSound={() => setEnabled(!enabled)}
+              scan={scan}
+              onToggleScan={() => setScan(!scan)}
+            />
 
-          <Footer />
+            <Footer />
+          </div>
         </div>
-      </div>
 
-      <div
-        ref={dotRef}
-        className="cursor-dot"
-        data-state={cursorState}
-        aria-hidden="true"
-      />
-      <div
-        ref={ringRef}
-        className="cursor-ring"
-        data-state={cursorState}
-        aria-hidden="true"
-      />
-    </>
+        <div
+          ref={dotRef}
+          className="cursor-dot"
+          data-state={cursorState}
+          aria-hidden="true"
+        />
+        <div
+          ref={ringRef}
+          className="cursor-ring"
+          data-state={cursorState}
+          aria-hidden="true"
+        />
+      </SWRConfig>
+      </MotionConfig>
+    </LazyMotion>
   );
 }

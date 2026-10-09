@@ -1,3 +1,5 @@
+import { m } from "motion/react";
+import { EASE_OUT } from "../../lib/motion";
 import { IconButton } from "../ui/IconButton";
 import { Micro } from "../chrome/Micro";
 import {
@@ -31,9 +33,12 @@ export function Navigation({
   status: string;
 }) {
   return (
-    <nav
+    <m.nav
       className="pointer-events-none absolute inset-x-0 top-0 z-[var(--z-ui)] flex items-center gap-4 px-pad-x pt-7.5 pb-3"
       aria-label="Section"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.08 }}
     >
       <button
         type="button"
@@ -64,7 +69,7 @@ export function Navigation({
         </span>
       </span>
 
-      <ol className="pointer-events-auto ml-auto mr-2 hidden items-center gap-[22px] md:flex">
+      <ol className="pointer-events-auto ml-auto mr-10 hidden items-center gap-[22px] md:flex">
         {sections.map((section, i) => (
           <li key={section.id}>
             <button
@@ -84,7 +89,7 @@ export function Navigation({
         ))}
       </ol>
 
-      <ol className="pointer-events-auto ml-1 flex items-center gap-1 md:hidden">
+      <ol className="pointer-events-auto relative ml-1 flex items-center gap-1 md:hidden">
         {sections.map((section, i) => (
           <li key={section.id}>
             <button
@@ -92,12 +97,17 @@ export function Navigation({
               onClick={() => onSelect(i)}
               aria-label={section.meta.tab}
               aria-current={i === index ? "true" : undefined}
-              className={`h-px w-4 transition-all duration-300 ease-cubie ${
-                i === index ? "bg-accent" : "bg-ink-30"
-              }`}
+              className="h-px w-4 bg-ink-30"
             />
           </li>
         ))}
+        <m.span
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 left-0 h-px w-4 bg-accent"
+          initial={false}
+          animate={{ x: index * 20 }}
+          transition={{ type: "spring", stiffness: 520, damping: 42 }}
+        />
       </ol>
 
       <div className="pointer-events-auto flex items-center gap-1.5">
@@ -118,6 +128,6 @@ export function Navigation({
           <IconScan />
         </IconButton>
       </div>
-    </nav>
+    </m.nav>
   );
 }

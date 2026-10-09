@@ -1,3 +1,5 @@
+import { AnimatePresence, m } from "motion/react";
+import { sectionVariants } from "../../lib/motion";
 import { Navigation } from "../layout/Navigation";
 import type { Section } from "../sections";
 
@@ -44,14 +46,20 @@ export function Board({
       />
 
       <div className="strip-hatch bg-panel-deep rounded-4xl relative h-full px-pad-x pt-[68px] pb-pad-y">
-        <section
-          key={section.id}
-          aria-label={section.meta.tab}
-          className="slide-fade h-full min-w-0 overflow-y-auto"
-          style={{ scrollbarWidth: "none" }}
-        >
-          <section.Panel />
-        </section>
+        <AnimatePresence mode="wait">
+          <m.section
+            key={section.id}
+            aria-label={section.meta.tab}
+            className="h-full min-w-0 overflow-y-auto"
+            style={{ scrollbarWidth: "none" }}
+            variants={sectionVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <section.Panel />
+          </m.section>
+        </AnimatePresence>
       </div>
     </main>
   );

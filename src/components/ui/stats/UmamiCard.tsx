@@ -1,24 +1,11 @@
-import { useEffect, useState } from "react";
 import { useCountUp } from "../../../hooks/useCountUp";
-import {
-  UMAMI_SHARE_URL,
-  UMAMI_SITE,
-  fetchUmamiStats,
-  type UmamiStats,
-} from "../../../lib/stats";
+import { useUmamiStats } from "../../../hooks/useStats";
+import { UMAMI_SHARE_URL, UMAMI_SITE } from "../../../lib/stats";
 import { Card, MiniStat } from "./cards";
+import { MiniStatSkeleton, Skeleton } from "./Skeleton";
 
 export function UmamiCard({ className }: { className?: string }) {
-  const [live, setLive] = useState<UmamiStats | null>(null);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    const ctrl = new AbortController();
-    fetchUmamiStats(ctrl.signal)
-      .then((d) => setLive(d))
-      .catch(() => setFailed(true));
-    return () => ctrl.abort();
-  }, []);
+  const { data: live, error } = useUmamiStats();
 
   const views = useCountUp(live?.pageViews ?? 0);
   const visitors = useCountUp(live?.visitors ?? 0);
@@ -28,7 +15,7 @@ export function UmamiCard({ className }: { className?: string }) {
     return (
       <Card
         title="Umami"
-        sub={failed ? "Gagal memuat data." : "Memuat data..."}
+        sub={error ? "Gagal memuat data." : "Memuat data..."}
         right={
           <a
             href={UMAMI_SHARE_URL}
@@ -41,11 +28,28 @@ export function UmamiCard({ className }: { className?: string }) {
         }
         className={className}
       >
-        <p className="font-mono text-[10px] text-ink-45">
-          {failed
-            ? "Umami tidak bisa dijangkau. Coba lagi nanti."
-            : "Mengambil traffic..."}
-        </p>
+        {error ? (
+          <p className="font-mono text-[10px] text-ink-45">
+            Umami tidak bisa dijangkau. Coba lagi nanti.
+          </p>
+        ) : (
+          <div className="flex min-h-0 flex-1 flex-col">
+            <div className="grid grid-cols-3 gap-1.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <MiniStatSkeleton key={i} />
+              ))}
+            </div>
+            <div className="mt-1.5 flex min-h-[96px] flex-1 items-end gap-1.5">
+              {[44, 68, 36, 82, 58, 74].map((h, i) => (
+                <Skeleton
+                  key={i}
+                  className="w-full rounded-[4px]"
+                  style={{ height: `${h}%` }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </Card>
     );
   }

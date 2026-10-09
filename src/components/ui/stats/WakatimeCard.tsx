@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import {
-  WAKATIME_SHARE_URL,
-  fetchWakatimeStats,
-  type WakatimeStats,
-} from "../../../lib/stats";
+import { useWakatimeStats } from "../../../hooks/useStats";
+import { WAKATIME_SHARE_URL } from "../../../lib/stats";
 import { Card, MiniStat } from "./cards";
+import { LangBarSkeleton, MiniStatSkeleton, Skeleton } from "./Skeleton";
 
 function LangBar({ name, pct }: { name: string; pct: number }) {
   return (
@@ -26,23 +23,13 @@ function LangBar({ name, pct }: { name: string; pct: number }) {
 }
 
 export function WakatimeCard({ className }: { className?: string }) {
-  const [live, setLive] = useState<WakatimeStats | null>(null);
-  const [failed, setFailed] = useState(false);
-
-  // Full live dari 2 share JSON (angka 7 hari + languages). Tanpa data lokal.
-  useEffect(() => {
-    const ctrl = new AbortController();
-    fetchWakatimeStats(ctrl.signal)
-      .then((d) => setLive(d))
-      .catch(() => setFailed(true));
-    return () => ctrl.abort();
-  }, []);
+  const { data: live, error } = useWakatimeStats();
 
   if (!live) {
     return (
       <Card
         title="WakaTime Stats"
-        sub={failed ? "Gagal memuat data." : "Memuat data..."}
+        sub={error ? "Gagal memuat data." : "Memuat data..."}
         right={
           <a
             href={WAKATIME_SHARE_URL.replace(/\.json$/, "")}
@@ -54,11 +41,34 @@ export function WakatimeCard({ className }: { className?: string }) {
         }
         className={className}
       >
-        <p className="font-mono text-[10px] text-ink-45">
-          {failed
-            ? "WakaTime tidak bisa dijangkau. Coba lagi nanti."
-            : "Mengambil aktivitas 7 hari terakhir..."}
-        </p>
+        {error ? (
+          <p className="font-mono text-[10px] text-ink-45">
+            WakaTime tidak bisa dijangkau. Coba lagi nanti.
+          </p>
+        ) : (
+          <div className="mb-1.5 flex items-stretch gap-2">
+            <div className="grid min-w-0 flex-1 grid-cols-2 gap-1.5">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <MiniStatSkeleton key={i} />
+              ))}
+            </div>
+            <div className="min-w-0 flex-1 rounded-[10px] bg-panel-deep p-2.5">
+              <Skeleton className="h-[9px] w-1/2" />
+              <div className="mt-1.5 grid grid-cols-2 gap-x-4 gap-y-2">
+                <div className="flex min-w-0 flex-col gap-2">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <LangBarSkeleton key={i} />
+                  ))}
+                </div>
+                <div className="flex min-w-0 flex-col gap-2">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <LangBarSkeleton key={i} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </Card>
     );
   }
