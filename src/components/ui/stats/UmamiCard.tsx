@@ -1,0 +1,139 @@
+import { useEffect, useState } from "react";
+import { useCountUp } from "../../../hooks/useCountUp";
+import {
+  UMAMI_SHARE_URL,
+  UMAMI_SITE,
+  fetchUmamiStats,
+  type UmamiStats,
+} from "../../../lib/stats";
+import { Card, MiniStat } from "./cards";
+
+export function UmamiCard({ className }: { className?: string }) {
+  const [live, setLive] = useState<UmamiStats | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    fetchUmamiStats(ctrl.signal)
+      .then((d) => setLive(d))
+      .catch(() => setFailed(true));
+    return () => ctrl.abort();
+  }, []);
+
+  const views = useCountUp(live?.pageViews ?? 0);
+  const visitors = useCountUp(live?.visitors ?? 0);
+  const visits = useCountUp(live?.visits ?? 0);
+
+  if (!live) {
+    return (
+      <Card
+        title="Umami"
+        sub={failed ? "Gagal memuat data." : "Memuat data..."}
+        right={
+          <a
+            href={UMAMI_SHARE_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="transition-colors hover:text-accent-strong"
+          >
+            {UMAMI_SITE}
+          </a>
+        }
+        className={className}
+      >
+        <p className="font-mono text-[10px] text-ink-45">
+          {failed
+            ? "Umami tidak bisa dijangkau. Coba lagi nanti."
+            : "Mengambil traffic..."}
+        </p>
+      </Card>
+    );
+  }
+
+  const max = Math.max(1, ...live.months.map((m) => m.pageViews));
+
+  return (
+    <Card
+      title="Umami"
+      sub="Live · all-time."
+      right={
+        <a
+          href={UMAMI_SHARE_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="transition-colors hover:text-accent-strong"
+        >
+          {live.site}
+        </a>
+      }
+      className={className}
+    >
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="grid grid-cols-3 gap-1.5">
+          <MiniStat
+            label="Views"
+            value={
+              <span ref={views.ref}>{views.value.toLocaleString("en-US")}</span>
+            }
+          />
+          <MiniStat
+            label="Visitors"
+            value={
+              <span ref={visitors.ref}>
+                {visitors.value.toLocaleString("en-US")}
+              </span>
+            }
+          />
+          <MiniStat
+            label="Visits"
+            value={
+              <span ref={visits.ref}>{visits.value.toLocaleString("en-US")}</span>
+            }
+          />
+          <MiniStat label="Countries" value={live.countries} />
+          <MiniStat label="Events" value={live.events} />
+        </div>
+        {live.months.length === 0 ? (
+          <p className="mt-1.5 font-mono text-[10px] text-ink-45">
+            Belum ada traffic tercatat.
+          </p>
+        ) : (
+          <div
+            className="mt-1.5 flex min-h-[96px] flex-1 items-end gap-1.5"
+            role="img"
+            aria-label="Grafik traffic per bulan (live dari Umami)"
+          >
+            {live.months.map((m) => {
+              const h = Math.max(6, Math.round((m.pageViews / max) * 100));
+              const sessH =
+                m.pageViews > 0
+                  ? Math.max(0, Math.round((m.sessions / m.pageViews) * 100))
+                  : 0;
+              return (
+                <div
+                  key={m.label}
+                  className="flex h-full flex-1 flex-col items-center justify-end gap-0.5"
+                  title={`${m.label}: ${m.pageViews} views / ${m.sessions} sessions`}
+                >
+                  <div
+                    className="flex w-full flex-col justify-end overflow-hidden rounded-[4px]"
+                    style={{ height: `${h}%` }}
+                  >
+                    <div className="w-full flex-1 bg-accent-strong" />
+                    <div
+                      className="w-full bg-ink-30"
+                      style={{ height: `${sessH}%` }}
+                    />
+                  </div>
+                  <span className="font-mono text-[9px] text-ink-45">
+                    {m.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+}
