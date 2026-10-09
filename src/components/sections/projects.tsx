@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CornerMarks } from "../ui/CornerMarks";
 import { JellyWord } from "../ui/JellyWord";
+import { ProtectedImage } from "../ui/ProtectedImage";
 import { Modal } from "../layout/Modal";
 import type { Meta } from "./meta";
 
@@ -33,34 +34,55 @@ type Project = {
   summary: string;
   tech: string[];
   links: { label: string; href: string; external?: boolean }[];
-  image?: string;
+  images?: string[];
 };
 
+const projectImages = (slug: string, files: string[]) =>
+  files.map((file) => `./images/projects/${slug}/${file}`);
+
 const projects: Project[] = [
-  {
-    title: "ModSecurity dan Nginx di Kubernetes",
-    year: "2025 — 2026",
-    summary:
-      "Dual-layer defense (WAF dan caching) di NGINX Ingress Controller pada Kubernetes multi-node di Proxmox Virtual Environment, host AWS EC2. 95% serangan HTTP(S) Flood diblokir pada 1.000 user konkuren (JMeter), CPU app-pod < 25 millicores.",
-    tech: ["Kubernetes", "ModSecurity", "Nginx", "JMeter"],
-    links: [
-      {
-        label: "Thesis",
-        href: "./docs/detail/muhammad_ilham_thesis.pdf",
-        external: true,
-      },
-    ],
-  },
   {
     title: "Waves (Toolkit Serba Guna)",
     year: "2026 — Sekarang",
     summary:
       "REST API dengan FastAPI, frontend TypeScript/Next.js, eksperimen application security dan ML (PyTorch).",
     tech: ["TypeScript", "Next.js", "FastAPI", "PyTorch"],
+    images: projectImages("Waves", [
+      "01-music-studio.png",
+      "02-stem-demucs.png",
+      "03-voice-synthesis.png",
+      "04-image-studio.png",
+      "05-video-studio.png",
+      "06-studio-remover.png",
+      "07-screen-coder.png",
+      "08-fine-tune-id.png",
+      "09-llm-hub.png",
+      "10-llm-detail.png",
+      "11-media-downloader.png",
+    ]),
     links: [
       {
         label: "Source",
         href: "https://github.com/KiRaRyuuKi",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "ModSecurity dan Nginx di Kubernetes",
+    year: "2025 — 2026",
+    summary:
+      "Dual-layer defense (WAF dan caching) di NGINX Ingress Controller pada Kubernetes multi-node di Proxmox Virtual Environment, host AWS EC2. 95% serangan HTTP(S) Flood diblokir pada 1.000 user konkuren (JMeter), CPU app-pod < 25 millicores.",
+    tech: ["Kubernetes", "ModSecurity", "Nginx", "JMeter"],
+    images: projectImages("Thesis", [
+      "01-diagram.png",
+      "02-diagram.png",
+      "03-diagram.png",
+    ]),
+    links: [
+      {
+        label: "Thesis",
+        href: "./docs/detail/muhammad_ilham_thesis.pdf",
         external: true,
       },
     ],
@@ -71,6 +93,15 @@ const projects: Project[] = [
     summary:
       "System pemetaan, monitoring, dan pengelolaan data sumber daya alam Kabupaten Bondowoso. Terdaftar sebagai hak cipta No. 000942745 (Juli 2025).",
     tech: ["Next.js", "TypeScript", "Prisma", "Postgres"],
+    images: projectImages("PANDAWA", [
+      "01-pandawa.png",
+      "02-landing-page.png",
+      "03-peta-interaktif.png",
+      "04-detail-kecamatan.png",
+      "05-authentication.png",
+      "06-dashboard.png",
+      "07-prediksi-hasil-panen.png",
+    ]),
     links: [
       {
         label: "Source",
@@ -85,6 +116,13 @@ const projects: Project[] = [
     summary:
       "Marketplace mobil baru/bekas plus rental. Chat buyer/seller real-time, kalender ketersediaan, konfirmasi booking, invoice otomatis, RBAC.",
     tech: ["Laravel", "Livewire", "Tailwind", "Postgres"],
+    images: projectImages("Amfibi", [
+      "01-landing-page.png",
+      "02-authentication.png",
+      "03-dashboard.png",
+      "04-market.png",
+      "05-detail-mobil.png",
+    ]),
     links: [
       {
         label: "Source",
@@ -95,10 +133,16 @@ const projects: Project[] = [
   },
   {
     title: "RisqiShop (Cashier & Inventory)",
-    year: "2023 — Sekarang",
+    year: "2023",
     summary:
       "Aplikasi desktop kasir dan manajemen stok dengan fitur diskon/total otomatis, laporan harian-bulanan dengan ekspor PDF/Excel.",
     tech: ["Java", "SQLite"],
+    images: projectImages("RisqiShop", [
+      "01-menu-login.png",
+      "02-transaksi.png",
+      "03-supplier.png",
+      "04-riwayat.png",
+    ]),
     links: [
       {
         label: "Source",
@@ -120,13 +164,15 @@ function Cover({
   index: number;
   className?: string;
 }) {
+  const cover = project.images?.[0];
+
   return (
     <div
       className={`hatch relative grid place-items-center overflow-hidden border-b border-hairline-soft ${className ?? ""}`}
     >
-      {project.image ? (
-        <img
-          src={project.image}
+      {cover ? (
+        <ProtectedImage
+          src={cover}
           alt={`Cuplikan ${project.title}`}
           loading="lazy"
           decoding="async"
@@ -138,6 +184,53 @@ function Cover({
         </span>
       )}
       <CornerMarks size={12} />
+    </div>
+  );
+}
+
+function Gallery({ images, title }: { images: string[]; title: string }) {
+  const [idx, setIdx] = useState(0);
+  const count = images.length;
+  const go = (step: number) => setIdx((i) => (i + step + count) % count);
+
+  return (
+    <div className="relative aspect-[15/8] overflow-hidden border-b border-hairline-soft bg-panel-deep">
+      <ProtectedImage
+        key={images[idx]}
+        src={images[idx]}
+        alt={`Cuplikan ${title} — gambar ${idx + 1} dari ${count}`}
+        loading="lazy"
+        decoding="async"
+        className="size-full object-contain"
+      />
+
+      {count > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            aria-label="Gambar sebelumnya"
+            className="absolute left-2 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full border border-hairline px-3 py-1.5 font-mono text-[12px] font-medium tracking-[0.12em] uppercase disabled:pointer-events-none disabled:opacity-30 bg-card/70 text-ink-80 backdrop-blur transition-colors hover:text-accent-strong"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            onClick={() => go(1)}
+            aria-label="Gambar berikutnya"
+            className="absolute right-2 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full border border-hairline px-3 py-1.5 font-mono text-[12px] font-medium tracking-[0.12em] uppercase disabled:pointer-events-none disabled:opacity-30 bg-card/70 text-ink-80 backdrop-blur transition-colors hover:text-accent-strong"
+          >
+            →
+          </button>
+          <span
+            aria-hidden="true"
+            className="absolute right-2 top-2 rounded-full border border-hairline bg-card/70 px-2 py-[3px] font-mono text-[9px] font-medium tracking-[0.16em] text-ink-60 backdrop-blur"
+          >
+            {String(idx + 1).padStart(2, "0")} /{" "}
+            {String(count).padStart(2, "0")}
+          </span>
+        </>
+      )}
     </div>
   );
 }
@@ -157,7 +250,11 @@ function ProjectModal({
       onClose={onClose}
       className="group relative flex max-h-[85dvh] w-full max-w-[520px] flex-col overflow-hidden rounded-[22px] border border-hairline bg-card shadow-[0_24px_70px_rgba(0,0,0,0.35)]"
     >
-      <Cover project={project} index={index} className="aspect-[16/8]" />
+      {project.images?.length ? (
+        <Gallery images={project.images} title={project.title} />
+      ) : (
+        <Cover project={project} index={index} className="aspect-[16/8]" />
+      )}
 
       <div className="flex flex-col gap-2 overflow-y-auto px-5 pt-4 pb-5">
         <p className="flex items-baseline gap-2">
@@ -286,7 +383,7 @@ export function Panel() {
             <Cover
               project={project}
               index={page * perPage + i}
-              className="aspect-[10/5]"
+              className="aspect-[11/5]"
             />
 
             <div className="flex flex-1 flex-col gap-2 px-4 pt-3 pb-4">

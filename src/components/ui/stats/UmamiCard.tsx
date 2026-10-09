@@ -61,14 +61,11 @@ export function UmamiCard({ className }: { className?: string }) {
       title="Umami"
       sub="Traffic and interaction."
       right={
-        <a
-          href={UMAMI_SHARE_URL}
-          target="_blank"
+        <p
           rel="noreferrer"
-          className="transition-colors hover:text-accent-strong"
         >
           {live.site}
-        </a>
+        </p>
       }
       className={className}
     >

@@ -58,22 +58,22 @@ const entries: {
     period: "2022 — 2026",
     kind: "Pendidikan",
     group: "Pendidikan",
-    role: "D4 Informatics Engineering — GPA 3.67",
+    role: "D4 Informatics Engineering",
     org: "Politeknik Negeri Jember, Jember",
     points: [
-      "PANDAWA geospatial system, hak cipta No. 000942745 (Jul 2025)",
+      "PANDAWA geospatial system, hak cipta No. 000942745 (Juli 2025)",
       "Amfibi car marketplace (Laravel)",
       "RisqiShop desktop (Java)",
-      "BNSP Web Developer (Apr 2026)",
+      "BNSP Web Developer (April 2026)",
     ],
   },
   {
     period: "2019 — 2022",
     kind: "Pendidikan",
     group: "Pendidikan",
-    role: "Computer and Network Engineering — nilai 77,75",
+    role: "Computer and Network Engineering",
     org: "SMKN 1 Bondowoso, Bondowoso",
-    points: ["BNSP Network Administrator (KKNI Level II), Jun 2022"],
+    points: ["BNSP Network Administrator (KKNI Level II), Juni 2022"],
   },
   {
     period: "2026 / 2022",
@@ -81,8 +81,8 @@ const entries: {
     role: "BNSP Web Developer dan Network Administrator",
     org: "LSP Polije / LSP SMKN 1 Bondowoso",
     points: [
-      "BNSP Web Developer (Apr 2026)",
-      "BNSP Network Administrator KKNI Level II (Jun 2022)",
+      "BNSP Web Developer (April 2026)",
+      "BNSP Network Administrator KKNI Level II (Juni 2022)",
     ],
   },
 ];
@@ -157,7 +157,7 @@ export function Panel() {
           onPointerUp={endDrag}
           onPointerLeave={endDrag}
           onPointerCancel={endDrag}
-          className={`flex max-h-[57dvh] min-h-0 flex-col overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+          className={`flex max-h-[55dvh] min-h-0 flex-col overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
             grabbing ? "cursor-grabbing select-none" : "cursor-grab"
           }`}
         >
@@ -169,7 +169,7 @@ export function Panel() {
               <article
                 key={entry.period}
                 className={`grid grid-cols-[104px_minmax(0,1fr)] gap-4 border-hairline py-4 last:border-b ${
-                  grouped ? "border-t-0 " : "border-t"
+                  grouped ? "border-t-0 pt-0" : "border-t"
                 }`}
               >
                 <div className="flex flex-col gap-1">

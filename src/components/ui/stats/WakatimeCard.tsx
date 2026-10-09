@@ -81,14 +81,11 @@ export function WakatimeCard({ className }: { className?: string }) {
       title="WakaTime Stats"
       sub="Coding activity this week."
       right={
-        <a
-          href={WAKATIME_SHARE_URL.replace(/\.json$/, "")}
-          target="_blank"
+        <p
           rel="noreferrer"
-          className="transition-colors hover:text-accent-strong"
         >
           {live.endDate}
-        </a>
+        </p>
       }
       className={className}
     >
