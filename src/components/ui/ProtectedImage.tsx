@@ -4,6 +4,7 @@ import type { ImgHTMLAttributes } from "react";
 export function ProtectedImage({
   className = "size-full",
   imgClassName = "object-cover",
+  skeleton = true,
   alt = "",
   draggable,
   onContextMenu,
@@ -11,12 +12,17 @@ export function ProtectedImage({
   onLoad,
   onError,
   ...props
-}: ImgHTMLAttributes<HTMLImageElement> & { imgClassName?: string }) {
+}: ImgHTMLAttributes<HTMLImageElement> & {
+  imgClassName?: string;
+  skeleton?: boolean;
+}) {
   const [ready, setReady] = useState(false);
 
   return (
     <span className={`relative block ${className}`}>
-      {!ready && <span aria-hidden="true" className="skeleton absolute inset-0" />}
+      {skeleton && !ready && (
+        <span aria-hidden="true" className="skeleton absolute inset-0" />
+      )}
       <img
         {...props}
         alt={alt}
