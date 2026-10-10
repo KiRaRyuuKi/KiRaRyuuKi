@@ -208,7 +208,6 @@ export function Panel() {
                 height={1000}
                 fetchPriority="high"
                 decoding="async"
-                skeleton={false}
                 className="size-full"
                 imgClassName="object-cover"
               />

@@ -23,6 +23,12 @@ export const PLAYLISTS: ("all" | Playlist)[] = [
 
 export const TRACKS: Track[] = [
   {
+    title: "Tarot",
+    artist: ".Feast",
+    playlist: "drive",
+    src: "./music/drive/.Feast - Tarot.mp3",
+  },
+  {
     title: "505",
     artist: "Arctic Monkeys",
     playlist: "drive",
@@ -47,6 +53,12 @@ export const TRACKS: Track[] = [
     src: "./music/drive/Arctic Monkeys - No. 1 Party Anthem.mp3",
   },
   {
+    title: "Nanti Kita Seperti Ini",
+    artist: "Batas Senja",
+    playlist: "drive",
+    src: "./music/drive/Batas Senja - Nanti Kita Seperti Ini.mp3",
+  },
+  {
     title: "Kita Slamanya",
     artist: "Bondan Prakoso Ft. Fade 2 Black",
     playlist: "drive",
@@ -69,6 +81,24 @@ export const TRACKS: Track[] = [
     artist: "Halstage",
     playlist: "drive",
     src: "./music/drive/Halstage - L.mp3",
+  },
+  {
+    title: "Cincin",
+    artist: "Hindia",
+    playlist: "drive",
+    src: "./music/drive/Hindia - Cincin.mp3",
+  },
+  {
+    title: "Evaluasi",
+    artist: "Hindia",
+    playlist: "drive",
+    src: "./music/drive/Hindia - Evaluasi.mp3",
+  },
+  {
+    title: "Everything u Are",
+    artist: "Hindia",
+    playlist: "drive",
+    src: "./music/drive/Hindia - Everything u Are.mp3",
   },
   {
     title: "Bercanda Di Malam Indah",
@@ -101,16 +131,52 @@ export const TRACKS: Track[] = [
     src: "./music/drive/Lukas_Graham - 7 Years.mp3",
   },
   {
+    title: "Bergema Sampai Selamanya",
+    artist: "Nadhif Basalamah",
+    playlist: "drive",
+    src: "./music/drive/Nadhif Basalamah - Bergema Sampai Selamanya.mp3",
+  },
+  {
+    title: "Kota Ini Tak Sama Tanpamu",
+    artist: "Nadhif Basalamah",
+    playlist: "drive",
+    src: "./music/drive/Nadhif Basalamah - Kota Ini Tak Sama Tanpamu.mp3",
+  },
+  {
+    title: "Masa ini, Nanti, dan Masa Indah Lainnya",
+    artist: "Nuca",
+    playlist: "drive",
+    src: "./music/drive/Nuca - Masa ini, Nanti, dan Masa Indah Lainnya.mp3",
+  },
+  {
     title: "Don't Look Back In Anger",
     artist: "Oasis",
     playlist: "drive",
     src: "./music/drive/Oasis - Don't Look Back In Anger.mp3",
   },
   {
+    title: "Kita Lewati Berdua",
+    artist: "Overnight",
+    playlist: "drive",
+    src: "./music/drive/Overnight - Kita Lewati Berdua.mp3",
+  },
+  {
     title: "To The Bone",
     artist: "Pamungkas",
     playlist: "drive",
     src: "./music/drive/Pamungkas - To The Bone.mp3",
+  },
+  {
+    title: "Tunggu Apa Lagi",
+    artist: "Paul Aro",
+    playlist: "drive",
+    src: "./music/drive/Paul Aro - Tunggu Apa Lagi.mp3",
+  },
+  {
+    title: "Mesra-Mesraannya Kecil-Kecilan Dulu",
+    artist: "Sal Priadi",
+    playlist: "drive",
+    src: "./music/drive/Sal Priadi - Mesra-Mesraannya Kecil-Kecilan Dulu.mp3",
   },
   {
     title: "JALAN PANJANG (Ft. GUNTUR SIMBOLON)",
@@ -125,10 +191,22 @@ export const TRACKS: Track[] = [
     src: "./music/drive/Skinnyfabs - Happy.mp3",
   },
   {
+    title: "Asmalibrasi",
+    artist: "Soegi Bornean",
+    playlist: "drive",
+    src: "./music/drive/Soegi Bornean - Asmalibrasi.mp3",
+  },
+  {
     title: "Ada Aku Disini (SMVLL Cover)",
     artist: "Wahyu",
     playlist: "drive",
     src: "./music/drive/Wahyu - Ada Aku Disini (SMVLL Cover).mp3",
+  },
+  {
+    title: "Sesi Potret (Ft. Ari Lesmana)",
+    artist: "Aku eńau",
+    playlist: "mellow",
+    src: "./music/mellow/Aku eńau - Sesi Potret (Ft. Ari Lesmana).mp3",
   },
   {
     title: "Hanya Rindu",
@@ -179,6 +257,12 @@ export const TRACKS: Track[] = [
     src: "./music/mellow/Idgitaf - Takut.mp3",
   },
   {
+    title: "Jangan Paksa Rindu",
+    artist: "Ifan Seventeen",
+    playlist: "mellow",
+    src: "./music/mellow/Ifan Seventeen - Jangan Paksa Rindu.mp3",
+  },
+  {
     title: "DUKA",
     artist: "Last Child",
     playlist: "mellow",
@@ -201,6 +285,24 @@ export const TRACKS: Track[] = [
     artist: "Umay Shahab (Ft. Natania Karin)",
     playlist: "mellow",
     src: "./music/mellow/Perayaan Mati Rasa - Umay Shahab (Ft. Natania Karin).mp3",
+  },
+  {
+    title: "Percuma",
+    artist: "Mario G Klau",
+    playlist: "mellow",
+    src: "./music/mellow/Percuma - Mario G Klau.mp3",
+  },
+  {
+    title: "Bahagia Lagi",
+    artist: "Piche Kota",
+    playlist: "mellow",
+    src: "./music/mellow/Piche Kota - Bahagia Lagi.mp3",
+  },
+  {
+    title: "Ada Titik-Titik Di Ujung Doa",
+    artist: "Sal Priadi",
+    playlist: "mellow",
+    src: "./music/mellow/Sal Priadi - Ada Titik-Titik Di Ujung Doa.mp3",
   },
   {
     title: "Di Ujung Jalan",
