@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useCountUp } from "../../../hooks/useCountUp";
 import {
   useGitHubContribGrid,
@@ -6,17 +6,22 @@ import {
 } from "../../../hooks/useStats";
 import {
   GITHUB_CONTRIBS_URL,
-  GITHUB_GRAPH_URL,
   GITHUB_USER,
+  getContribMonthLabel,
 } from "../../../lib/stats";
-import { Card, HEAT_COLORS, MONTHS, MiniStat } from "./cards";
-import { HeatGridSkeleton, MiniStatSkeleton } from "./Skeleton";
+import { IconGitHub } from "../icons/IconGitHub";
+import { HEAT_COLORS, MONTHS, MiniStat } from "./cards";
+import { HeatGridSkeleton } from "./Skeleton";
+import {
+  StatErrorNote,
+  StatMiniSkeletonGrid,
+  StatShell,
+} from "./StatShell";
 
 export function GithubCard({ className }: { className?: string }) {
   const year = new Date().getFullYear();
   const { data: live, error } = useGitHubSummary();
   const { data: grid, error: contribError } = useGitHubContribGrid();
-  const [imgOk, setImgOk] = useState(true);
 
   const loading = !live && !error;
 
@@ -24,44 +29,62 @@ export function GithubCard({ className }: { className?: string }) {
   const followers = useCountUp(live?.followers ?? 0);
   const following = useCountUp(live?.following ?? 0);
 
+  const failed = Boolean(error && contribError);
+
+  if (!live && !grid) {
+    return (
+      <StatShell
+        title="GitHub Contributions"
+        sub={failed ? "Gagal memuat data." : "Memuat data..."}
+        right={`@${GITHUB_USER}`}
+        icon={IconGitHub}
+        className={className}
+      >
+        {failed ? (
+          <StatErrorNote message="GitHub API tidak bisa dijangkau (rate limit / offline). Coba lagi nanti." />
+        ) : (
+          <>
+            <StatMiniSkeletonGrid count={3} />
+            <HeatGridSkeleton />
+          </>
+        )}
+      </StatShell>
+    );
+  }
+
   const dayLabels = ["", "Tue", "", "Thu", "", "Sat", ""];
   const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   return (
-    <Card
+    <StatShell
       title="GitHub Contributions"
-      sub={grid ? "Trailing 12 months." : `My GitHub activity in ${year}.`}
+      sub={`My GitHub activity in ${year}.`}
       right={`@${GITHUB_USER}`}
+      icon={IconGitHub}
       className={className}
     >
-      <div className="grid grid-cols-3 gap-1.5">
-        {loading ? (
-          <>
-            <MiniStatSkeleton />
-            <MiniStatSkeleton />
-            <MiniStatSkeleton />
-          </>
-        ) : (
-          <>
-            <MiniStat
-              label="Repos"
-              value={live ? <span ref={repos.ref}>{repos.value}</span> : "-"}
-            />
-            <MiniStat
-              label="Followers"
-              value={
-                live ? <span ref={followers.ref}>{followers.value}</span> : "-"
-              }
-            />
-            <MiniStat
-              label="Following"
-              value={
-                live ? <span ref={following.ref}>{following.value}</span> : "-"
-              }
-            />
-          </>
-        )}
-      </div>
+      {loading ? (
+        <StatMiniSkeletonGrid count={3} />
+      ) : (
+        <div className="grid grid-cols-3 gap-1.5">
+          <MiniStat
+            label="Repos"
+            value={live ? <span ref={repos.ref}>{repos.value}</span> : "-"}
+          />
+          <MiniStat
+            label="Followers"
+            value={
+              live ? <span ref={followers.ref}>{followers.value}</span> : "-"
+            }
+          />
+          <MiniStat
+            label="Following"
+            value={
+              live ? <span ref={following.ref}>{following.value}</span> : "-"
+            }
+          />
+        </div>
+      )}
       {error && !live ? (
         <p className="mt-2 font-mono text-[10px] text-ink-45">
           GitHub API tidak bisa dijangkau (rate limit / offline). Coba lagi
@@ -81,17 +104,13 @@ export function GithubCard({ className }: { className?: string }) {
                 aria-label={`Heatmap aktivitas GitHub live (trailing 12 bulan)`}
               >
                 <span aria-hidden="true" />
-                {grid.months.map((m, i) => (
+                {grid.months.map((_month, i) => (
                   <span
                     key={i}
                     aria-hidden="true"
                     className="font-mono text-[9px] whitespace-nowrap text-ink-45"
                   >
-                    {i === 0
-                      ? ""
-                      : m !== grid.months[i - 1]
-                        ? (MONTHS[m] ?? "")
-                        : ""}
+                    {getContribMonthLabel(grid.months, MONTHS, i)}
                   </span>
                 ))}
                 {dayLabels.map((dl, r) => (
@@ -107,7 +126,7 @@ export function GithubCard({ className }: { className?: string }) {
                       return (
                         <i
                           key={wi}
-                          title={`${dayNames[r]} · level ${level}`}
+                          title={`${dayNames[r] ?? ""} · level ${level}`}
                           className={`aspect-square w-full rounded-[2px] ${HEAT_COLORS[level] ?? HEAT_COLORS[0]}`}
                         />
                       );
@@ -117,7 +136,7 @@ export function GithubCard({ className }: { className?: string }) {
               </div>
             </div>
             <div className="mt-1.5 flex items-center gap-1">
-              <span className="font-mono text-[9px] text-ink-30">
+              <span className="ml-5 font-mono text-[9px] text-ink-30">
                 Learn how we count contributions
               </span>
               <span className="ml-auto font-mono text-[9px] text-ink-45">
@@ -136,21 +155,11 @@ export function GithubCard({ className }: { className?: string }) {
         ) : (
           <HeatGridSkeleton />
         )
-      ) : imgOk ? (
-        <div className="mt-2 flex min-h-0 flex-1 items-center">
-          <img
-            src={GITHUB_GRAPH_URL}
-            alt={`Grafik aktivitas GitHub ${GITHUB_USER}`}
-            loading="lazy"
-            onError={() => setImgOk(false)}
-            className="w-full rounded-[8px]"
-          />
-        </div>
       ) : (
         <p className="mt-2 font-mono text-[10px] text-ink-45">
           Grafik aktivitas tidak bisa dimuat saat ini.
         </p>
       )}
-    </Card>
+    </StatShell>
   );
 }

@@ -32,7 +32,7 @@ export function Panel() {
   return (
     <div className="flex flex-col h-full pb-1 gap-3 justify-end">
       <div className="grid grid-cols-5 gap-2 lg:flex-row">
-        <div className="flex flex-1 flex-col col-span-2 mr-8 mb-8 justify-end">
+        <div className="flex flex-1 flex-col col-span-2">
           <div className="mb-3 flex items-baseline gap-2 text-ink-45">
             <p className="font-mono text-[clamp(15px,1.55vw)] font-medium tracking-[0.02em] text-ink lowercase">
               &lt;/stats&gt;

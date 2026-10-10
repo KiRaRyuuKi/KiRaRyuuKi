@@ -23,7 +23,7 @@ export function MiniStatSkeleton() {
   );
 }
 
-export function LangBarSkeleton() {
+export function BarSkeleton() {
   return (
     <div>
       <div className="flex items-baseline justify-between gap-2">
@@ -35,7 +35,9 @@ export function LangBarSkeleton() {
   );
 }
 
-const HEAT_COLS = 40;
+import { CONTRIB_WEEKS } from "../../../lib/stats";
+
+const HEAT_COLS = CONTRIB_WEEKS;
 const HEAT_ROWS = 7;
 
 export function HeatGridSkeleton() {

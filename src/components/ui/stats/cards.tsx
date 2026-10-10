@@ -1,3 +1,5 @@
+import type { IconProps } from "../icons";
+
 export const HEAT_COLORS = [
   "bg-ink-18",
   "bg-accent-strong/25",
@@ -41,12 +43,14 @@ export function MiniStat({
 }
 
 export function Card({
+  icon: Icon,
   title,
   sub,
   right,
   children,
   className,
 }: {
+  icon?: ((props: IconProps) => React.ReactNode) | undefined;
   title: string;
   sub: string;
   right?: React.ReactNode;
@@ -57,7 +61,8 @@ export function Card({
     <section
       className={`flex min-w-0 flex-col rounded-[14px] border border-hairline bg-card p-2.5 ${className ?? ""}`}
     >
-      <h3 className="text-[13px] font-semibold tracking-[-0.02em] text-ink">
+      <h3 className="flex items-center gap-1.5 text-[13px] font-semibold tracking-[-0.02em] text-ink">
+        {Icon && <Icon className="size-[14px] shrink-0 text-ink-60" />}
         {title}
       </h3>
       <div className="flex items-baseline justify-between gap-2">

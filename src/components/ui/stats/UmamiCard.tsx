@@ -1,8 +1,14 @@
 import { useCountUp } from "../../../hooks/useCountUp";
 import { useUmamiStats } from "../../../hooks/useStats";
 import { UMAMI_SHARE_URL, UMAMI_SITE } from "../../../lib/stats";
-import { Card, MiniStat } from "./cards";
-import { MiniStatSkeleton, Skeleton } from "./Skeleton";
+import { IconUmami } from "../icons/IconUmami";
+import { MiniStat } from "./cards";
+import { Skeleton } from "./Skeleton";
+import {
+  StatErrorNote,
+  StatMiniSkeletonGrid,
+  StatShell,
+} from "./StatShell";
 
 export function UmamiCard({ className }: { className?: string }) {
   const { data: live, error } = useUmamiStats();
@@ -13,9 +19,10 @@ export function UmamiCard({ className }: { className?: string }) {
 
   if (!live) {
     return (
-      <Card
+      <StatShell
         title="Umami"
         sub={error ? "Gagal memuat data." : "Memuat data..."}
+        icon={IconUmami}
         right={
           <a
             href={UMAMI_SHARE_URL}
@@ -29,16 +36,10 @@ export function UmamiCard({ className }: { className?: string }) {
         className={className}
       >
         {error ? (
-          <p className="font-mono text-[10px] text-ink-45">
-            Umami tidak bisa dijangkau. Coba lagi nanti.
-          </p>
+          <StatErrorNote message="Umami tidak bisa dijangkau. Coba lagi nanti." />
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
-            <div className="grid grid-cols-3 gap-1.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <MiniStatSkeleton key={i} />
-              ))}
-            </div>
+            <StatMiniSkeletonGrid count={5} className="grid grid-cols-5 gap-1.5" />
             <div className="mt-1.5 flex min-h-[96px] flex-1 items-end gap-1.5">
               {[44, 68, 36, 82, 58, 74].map((h, i) => (
                 <Skeleton
@@ -50,23 +51,18 @@ export function UmamiCard({ className }: { className?: string }) {
             </div>
           </div>
         )}
-      </Card>
+      </StatShell>
     );
   }
 
-  const max = Math.max(1, ...live.days.map((m) => m.pageViews));
+  const max = Math.max(1, ...live.days.map((day) => day.pageViews));
 
   return (
-    <Card
+    <StatShell
       title="Umami"
       sub="Traffic and interaction."
-      right={
-        <p
-          rel="noreferrer"
-        >
-          {live.site}
-        </p>
-      }
+      right={<p>{live.site}</p>}
+      icon={IconUmami}
       className={className}
     >
       <div className="flex min-h-0 flex-1 flex-col">
@@ -106,17 +102,17 @@ export function UmamiCard({ className }: { className?: string }) {
             role="img"
             aria-label="Grafik traffic harian 30 hari terakhir (live dari Umami)"
           >
-            {live.days.map((m) => {
-              const h = Math.max(6, Math.round((m.pageViews / max) * 100));
+            {live.days.map((day) => {
+              const h = Math.max(6, Math.round((day.pageViews / max) * 100));
               const sessH =
-                m.pageViews > 0
-                  ? Math.max(0, Math.round((m.sessions / m.pageViews) * 100))
+                day.pageViews > 0
+                  ? Math.max(0, Math.round((day.sessions / day.pageViews) * 100))
                   : 0;
               return (
                 <div
-                  key={m.iso || m.label}
+                  key={day.iso || day.label}
                   className="flex h-full flex-1 flex-col items-center justify-end gap-0.5"
-                  title={`${m.iso || m.label}: ${m.pageViews} views / ${m.sessions} sessions`}
+                  title={`${day.iso || day.label}: ${day.pageViews} views / ${day.sessions} sessions`}
                 >
                   <div
                     className="flex w-full flex-col justify-end overflow-hidden rounded-[4px]"
@@ -129,7 +125,7 @@ export function UmamiCard({ className }: { className?: string }) {
                     />
                   </div>
                   <span className="font-mono text-[9px] whitespace-nowrap text-ink-45">
-                    {m.label}
+                    {day.label}
                   </span>
                 </div>
               );
@@ -137,6 +133,6 @@ export function UmamiCard({ className }: { className?: string }) {
           </div>
         )}
       </div>
-    </Card>
+    </StatShell>
   );
 }
