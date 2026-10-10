@@ -92,7 +92,8 @@ export function Panel() {
             height={1000}
             loading="lazy"
             decoding="async"
-            className="size-full object-cover"
+            className="size-full"
+            imgClassName="object-cover"
           />
         </div>
         <figcaption className="sr-only">Portrait placeholder</figcaption>

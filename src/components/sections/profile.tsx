@@ -208,7 +208,8 @@ export function Panel() {
                 height={1000}
                 fetchPriority="high"
                 decoding="async"
-                className="size-full object-cover"
+                className="size-full"
+                imgClassName="object-cover"
               />
               <div
                 aria-hidden="true"

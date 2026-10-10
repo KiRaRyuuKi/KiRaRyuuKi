@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { LazyMotion, MotionConfig, domAnimation } from "motion/react";
 import { SWRConfig } from "swr";
+import { prefetchImagesIdle } from "../lib/imagePrefetch";
 import { sectionAt, sectionIds, sections } from "../components/sections";
 import { Board } from "../components/chrome/Board";
 import { Boot } from "../components/chrome/Boot";
@@ -26,6 +27,10 @@ export default function Layout() {
   useEffect(() => {
     setScan(mode === "dark");
   }, [mode]);
+
+  useEffect(() => {
+    prefetchImagesIdle(["./images/foto-cv.png"]);
+  }, []);
 
   const { enabled, setEnabled, play } = useSound();
   const { dotRef, ringRef, state: cursorState } = useCursor();

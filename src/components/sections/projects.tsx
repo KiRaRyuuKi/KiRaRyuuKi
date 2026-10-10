@@ -3,6 +3,7 @@ import { CornerMarks } from "../ui/CornerMarks";
 import { JellyWord } from "../ui/JellyWord";
 import { ProtectedImage } from "../ui/ProtectedImage";
 import { Modal } from "../layout/Modal";
+import { prefetchImages, prefetchImagesIdle } from "../../lib/imagePrefetch";
 import type { Meta } from "./meta";
 
 export const id = "projects";
@@ -155,6 +156,10 @@ const projects: Project[] = [
 
 export const projectCount = projects.length;
 
+const coverImages = projects.flatMap((project) =>
+  project.images?.[0] ? [project.images[0]] : [],
+);
+
 function Cover({
   project,
   index,
@@ -176,7 +181,8 @@ function Cover({
           alt={`Cuplikan ${project.title}`}
           loading="lazy"
           decoding="async"
-          className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          className="size-full"
+          imgClassName="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
       ) : (
         <span className="text-[clamp(30px,3.2vw,44px)] leading-none font-bold tracking-[-0.05em] text-ink-18 transition-colors duration-300 group-hover:text-accent">
@@ -191,7 +197,15 @@ function Cover({
 function Gallery({ images, title }: { images: string[]; title: string }) {
   const [idx, setIdx] = useState(0);
   const count = images.length;
-  const go = (step: number) => setIdx((i) => (i + step + count) % count);
+  const go = (step: number) =>
+    setIdx((i) => {
+      const next = (i + step + count) % count;
+      prefetchImages([
+        images[(next + 1) % count],
+        images[(next - 1 + count) % count],
+      ]);
+      return next;
+    });
 
   return (
     <div className="relative aspect-[15/8] overflow-hidden border-b border-hairline-soft bg-panel-deep">
@@ -201,7 +215,8 @@ function Gallery({ images, title }: { images: string[]; title: string }) {
         alt={`Cuplikan ${title} — gambar ${idx + 1} dari ${count}`}
         loading="lazy"
         decoding="async"
-        className="size-full object-contain"
+        className="size-full"
+        imgClassName="object-contain"
       />
 
       {count > 1 && (
@@ -327,6 +342,17 @@ export function Panel() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
+  useEffect(() => {
+    prefetchImagesIdle(coverImages);
+  }, []);
+
+  useEffect(() => {
+    const covers = shown
+      .map((project) => project.images?.[0])
+      .filter((src): src is string => Boolean(src));
+    prefetchImagesIdle(covers);
+  }, [page, perPage]);
+
   const pages = Math.max(1, Math.ceil(projects.length / perPage));
 
   useEffect(() => {
@@ -336,6 +362,7 @@ export function Panel() {
   const shown = projects.slice(page * perPage, page * perPage + perPage);
 
   const open = (project: Project, index: number) => {
+    prefetchImages(project.images ?? []);
     setActive({ project, index });
   };
 
@@ -377,6 +404,7 @@ export function Panel() {
         {shown.map((project, i) => (
           <article
             key={project.title}
+            onMouseEnter={() => prefetchImages(project.images ?? [])}
             onClick={() => open(project, page * perPage + i)}
             className="group relative flex cursor-pointer flex-col overflow-hidden rounded-[18px] bg-card shadow-[0_1px_2px_rgba(10,10,10,0.05)] transition-[transform,box-shadow] duration-300 ease-cubie hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(10,10,10,0.12)]"
           >
