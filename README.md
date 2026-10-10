@@ -1,20 +1,3 @@
-## Hi there 👋
-
-<!--
-**KiRaRyuuKi/KiRaRyuuKi** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
-
 <!--
 <div>
   <p>██╗  ██╗██╗██████╗  █████╗ ██████╗ ██╗   ██╗██╗ ██╗██╗ ██╗██╗  ██╗██╗</p>
@@ -26,11 +9,29 @@ Here are some ideas to get you started:
 </div>
 -->
 
+## Hi there, I'm Muhammad Ilham 👋!
+
+### Full-Stack Developer · DevOps · Application & Network Security
+
+I enjoy exploring how systems work, experimenting with ideas, and turning what I learn into practical projects. My interests span application development, infrastructure, and security.
+
 <div align="center">
   <picture>
     <img alt="KiRaRyuuKi" src="public/images/KiRaRyuuKi.png" />
   </picture>
 </div>
+
+### Areas of Interest
+
+- **Full-Stack Development** · building and improving web applications.
+- **DevOps & Infrastructure** · Linux, containerization, Kubernetes, and deployment workflows.
+- **Application & Network Security** · exploring defensive techniques and security testing.
+
+### Connect
+
+- 📫 **Email:** [m.ilham.v.28.07.2003@gmail.com](mailto:m.ilham.v.28.07.2003@gmail.com)
+- 💼 **LinkedIn:** [linkedin.com/in/kiraryuuki](https://linkedin.com/in/kiraryuuki)
+- 🌐 **Portfolio:** [kiraryuuki.github.io/KiRaRyuuKi](https://kiraryuuki.github.io/KiRaRyuuKi)
 
 <div align="center">
   <picture>
