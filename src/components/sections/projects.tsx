@@ -83,7 +83,7 @@ const projects: Project[] = [
     links: [
       {
         label: "Thesis",
-        href: "./docs/detail/muhammad_ilham_thesis.pdf",
+        href: "https://sipora.polije.ac.id/57452/",
         external: true,
       },
     ],

@@ -144,7 +144,7 @@ export function Panel() {
         <div className="mt-[clamp(22px,2.6vw,36px)] flex flex-wrap items-center gap-x-6 gap-y-3">
           <Pill
             label="Lihat Lengkap"
-            href="./docs/muhammad-ilham_devops_resume.pdf"
+            href="./docs/muhammad ilham resume.pdf"
             icon="download"
           />
         </div>
