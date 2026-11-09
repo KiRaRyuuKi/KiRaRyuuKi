@@ -11,9 +11,9 @@
 
 ## Hi there, I'm Muhammad Ilham 👋!
 
-### Full-Stack Developer · DevOps · Application & Network Security
+### Software Developer · AI Application Development · DevOps Engineer
 
-I enjoy exploring how systems work, experimenting with ideas, and turning what I learn into practical projects. My interests span application development, infrastructure, and security.
+I enjoy exploring how systems work, experimenting with ideas, and turning what I learn into practical projects. My interests span software development, AI applications, and infrastructure.
 
 <div align="center">
   <picture>
@@ -23,9 +23,9 @@ I enjoy exploring how systems work, experimenting with ideas, and turning what I
 
 ### Areas of Interest
 
-- **Full-Stack Development** · building and improving web applications.
-- **DevOps & Infrastructure** · Linux, containerization, Kubernetes, and deployment workflows.
-- **Application & Network Security** · exploring defensive techniques and security testing.
+- **Software Developer** · building and improving software and web applications.
+- **AI Application Development** · turning models and ideas into practical applications.
+- **DevOps Engineer** · Linux, containerization, Kubernetes, and deployment workflows.
 
 ### Connect
 
